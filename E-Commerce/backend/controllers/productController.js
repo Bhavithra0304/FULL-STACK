@@ -1,7 +1,11 @@
 const productModel=require("../models/product")
 
 exports.getProducts=async(req,res,next)=>{
-    const products= await productModel.find({});
+    const query=req.query.keyword?{"product.name":{
+        $regex:req.query.keyword,
+        $options:'i'
+    }}:{};
+    const products= await productModel.find(query);
     res.status(200).json({
         status:"success",
         message:"get method success",
